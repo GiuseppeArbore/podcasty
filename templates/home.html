@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block home_active %}active{% endblock %}
+
+
+{% block content %}         
+<div class="supermydiv">
+  <main class="col-lg-9 col-md-12 row g-4" id="lista-serie">  
+    {% for serie in series %}
+    <article class="col-lg-3 col-md-6" data-categ="{{serie.categoria}}">
+      <div class="card h-100">
+        <div class="myflex myarticle">
+          <h5 class="mytitolo">{{ serie.titolo_serie}}</h5>
+          <a href="{{url_for('single_serie', id=serie.id_serie)}}" class="btn btn-dark btn-sm mybtn">Apri</a>
+        </div>
+        <img class="serieimg p-2" src="{{ url_for('static', filename=serie.immagine_serie) }}" alt="immagine della serie {{serie.titolo_serie}}">
+        <div class="card-body">
+          <p class="card-text">{{ serie.descrizione}}</p>
+        </div>
+        <div class="card-footer myflex">
+          <small class="text-muted">{{ serie.nickname}}</small>
+          <a class="nav-link" id="catjs" href="#" data-filcat="{{serie.categoria}}"> #{{serie.categoria}} </a>
+        </div>
+      </div>
+    </article>
+
+    {% endfor %}
+  </main>
+  <aside class="col-lg-3 col-md-12 myaside">
+
+    {% if current_user.is_authenticated%}
+        {% if current_user.creatore%}
+        <div id="mycrea">
+          <button type="button" class="btn btn-dark mybtnserie" data-bs-toggle="modal" data-bs-target="#createModal">
+            CREA NUOVA SERIE
+          </button>
+        </div>
+        {%endif%}
+    {%endif%}
+      <div class="cerca_ep">
+        <form class="d-flex cerca_episodio"  method="get"> 
+          <input class="form-control me-3" type="text" id="cerca_in" placeholder="Cerca per categoria" aria-label="Search">
+          <button class="btn btn-outline-dark" id="search_s" type="submit">Search</button> 
+        </form> 
+      </div>
+      <div id="showall">
+        <button type="button" class="btn btn-dark btn-sm myall hide">
+          mostra tutte le serie
+        </button>
+      </div>
+    {% if current_user.is_authenticated%}
+        {% if current_user.creatore%}
+        <div>
+          {% if create %}
+          <h5>SERIE CREATE</h5>
+            <ul class="myseries">   <!--classe non ancora usata-->
+              {% for seriec in create%}
+                <li><a class="mya" href="{{ url_for('single_serie', id=seriec.id_serie) }}"> {{seriec.titolo_serie}}</a></li>
+              {%endfor%}
+            </ul>
+          {% else %}
+          <h6>Non hai ancora creato una serie, creane una!</h6>
+          {% endif %}
+          </div>
+        {% endif %}
+          <div>
+            {% if seguite %}
+              <h5>SERIE SEGUITE</H5>
+                <ul class="myseries">   <!--classe non ancora usata-->
+                  {% for serief in seguite %}
+                    <li><a class="mya" href="{{ url_for('single_serie', id=serief.id_serie) }}"> {{serief.titolo_serie}}</a></li>
+                  {%endfor%}
+                </ul>   
+            {% else %}  
+              <h6>Inizia a seguire una serie!</h6>
+            {% endif %}
+          </div>
+    {%else%}
+      <div>
+        <p>Per poter seguire serie, commentare episodi e crearli, devi autenticarti</p>
+      </div>
+    {% endif %}
+  </aside>
+</div>
+
+
+{% if current_user.is_authenticated %}
+<div class="modal fade" id="createModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5">Crea nuova serie</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form action="/serie/new" method="POST" enctype="multipart/form-data">  <!--SERIE NEW-->
+        <div class="modal-body">
+          <fieldset disabled>  <!--disabilitato in quanto current user-->
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" id="usrnameTextInput" name="usrname" 
+                value="@{{current_user.nickname}}">
+              <label for="usrnameTextInput" class="form-label">Username</label>
+            </div>
+          </fieldset>
+          
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control rounded-3" name="titolo_serie" id="titoloInput" placeholder="Inserire titolo (minimo 3 caratteri)"
+              required minlength="3" maxlength="10">
+            <label for="titoloInput" class="form-label">Titolo</label>
+          </div>
+          <div class="form-floating mb-3">
+            <textarea class="form-control" id="serieTextarea" name="testo" rows="3"
+            placeholder="Inserisci una breve descrizione della tua serie" required minlength="20" maxlength="50"></textarea>
+           <label for="serieTextarea" class="form-label">Breve descrizione serie</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control rounded-3" name="categoria" id="categoriaInput" placeholder="Categoria Serie"
+            required minlength="3" maxlength="10">
+            <label for="categoriaInput" class="form-label">Categoria</label>
+          </div>
+          <div class="mb-3">
+            <label for="imageFile" class="form-label">Aggiungi un'immagine</label>
+            <input class="form-control" name="immagine_serie" required type="file" id="imageFile">
+          </div>
+          
+          <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+          <button type="submit" class="btn btn-primary">Crea Serie</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endif %}
+{% endblock %}
+

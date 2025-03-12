@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Accedi{% endblock %}
+{% block login_active %}active{% endblock %}
+
+{% block content %}
+<div class="myldiv">
+    <div class="col-lg-5 col-md-12 bg-light p-4 border rounded-3 ">
+        <form action="/accedi" method="POST">
+
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control rounded-3" name="nicknameIn" id="nicknameInput" placeholder="Nickname">
+                <label for="nicknameInput" class="form-label">Nickname</label>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input type="password" class="form-control rounded-3" name="passwordIn" id="passwordInput" placeholder="Password (minimo 8 caratteri)">
+                <label for="passwordInput" class="form-label">Password (minimo 8 caratteri)</label>
+            </div>
+            <button class="w-100 mb-2 btn btn-lg rounded-3 btn-dark" type="submit">Accedi</button>
+
+        </form>
+    </div>
+</div>
+
+{% endblock %}
+
+

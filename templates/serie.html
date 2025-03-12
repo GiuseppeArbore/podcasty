@@ -1,0 +1,205 @@
+{% extends "base.html" %}
+{% block title %}Serie by {{serie.autore}}{% endblock %}
+{% block home_active %}active{% endblock %}
+
+{% block content %}
+<div class="supermydiv">
+
+  <main class="col-lg-9 col-md-12">
+    <article class="row border p-2 myart">
+      <div class="col-lg-3 col-md-6 col-sm-12 px-0">
+        <img class="serieimg2 p-2" src="{{ url_for('static', filename=serie.immagine_serie) }}" alt="Immagine della serie ">
+      </div>
+      <div class="col-lg-9 col-md-6 col-sm-12">
+        <section class="d-flex align-items-center mt-2 mb-4">
+          <div>
+            <h4>{{ serie.titolo_serie }}</h4> 
+            <h6 class="username">{{ serie.nickname}} - {{serie.categoria}}</h6> 
+          </div>
+          {% if current_user.is_authenticated %}
+          <div class="flex-grow-1 text-end">
+            {% if is_follower %}
+            <a href="{{url_for('unfollow', id_s=serie.id_serie)}}" class="btn btn-dark btn-md mybtn">
+              NON SEGUIRE PIÚ
+            </a>
+            {% elif serie.autore == current_user.id %}
+            <div class="mybdx">
+              <button type="button" class="btn btn-dark btn-md mybtn" data-bs-toggle="modal" data-bs-target="#modalup">
+                modifica  
+              </button>        
+              <a href="{{url_for('elimina_serie', id_s=serie.id_serie)}}" class="btn btn-dark btn-md mybtn">
+                elimina
+              </a>
+            </div>
+            {% else %}
+            <a href="{{url_for('follow', id_s=serie.id_serie)}}" class="btn btn-dark btn-md mybtn">
+              SEGUI
+            </a>
+            {% endif %}
+          </div>
+          {% endif %}
+        </section>
+        <p class="mydescr">{{ serie.descrizione }}</p>
+        {% if current_user.is_authenticated %}
+        {% if serie.autore == current_user.id %}
+        {% endif %}
+        {% endif %}
+        <section>
+
+          {% if episodi %}
+            <h5>LISTA EPISODI</h5>
+          {% else %}
+            <h6>Ancora nessun episodio, torna presto</h6>
+          {% endif %}
+            <ul>
+              {% for episodio in episodi%}
+              <li class="myep"  data-tit="{{episodio.titolo}}" data-descr="{{episodio.descrizione}}">
+                <a class="mya" href="{{url_for('single_episodio', id=serie.id_serie  ,id_e=episodio.id_episodio )}}">{{episodio.titolo}}</a>
+              </li>
+              {% endfor %}
+            </ul>
+        </section>
+      </div>
+    </article>
+  </main>
+
+  <aside class="col-lg-3 col-md-12 myaside">  
+    <div class="cerca_ep">
+      <form class="d-flex cerca_episodio"  method="get"> 
+        <input class="form-control me-3" type="text" id="search_in" placeholder="Cerca tra gli eposodi" aria-label="Search">
+        <button class="btn btn-outline-dark" id="searchep" type="submit">Search</button> 
+      </form> 
+    </div>
+    <div id="showallep">
+      <button type="button" class="btn btn-dark btn-sm myall hide" href="#">
+        mostra tutti gli episodi
+      </button>
+    </div>
+    {% if current_user.is_authenticated %}
+    {% if current_user.id == serie.autore%}
+    <div id="mycrea">
+      <button type="button" class="btn btn-dark mybtnserie" data-bs-toggle="modal" data-bs-target="#createModal">
+        CREA NUOVO EPISODIO
+      </button>
+    </div>
+    {%endif%}
+    {% else %}
+      <p>Registrati/accedi per creare serie e episodi:</p>
+      <section class="myasect">
+        <a class="btn btn-dark btn-lg mybb" aria-current="page" href="{{ url_for('signup') }}">Registrati</a>
+        <a class="btn btn-dark btn-lg mybb" aria-current="page" href="{{ url_for('login') }}">Accedi</a>
+      </section>
+    {% endif %}
+  </aside>
+
+</div>
+
+{% if current_user.is_authenticated%}
+
+<section>
+  <div class="modal fade" id="modalup" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5">Modifica serie: {{serie.titolo_serie}}</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form action="/serie/update" method="POST" enctype="multipart/form-data"> 
+          <div class="modal-body">
+            <fieldset disabled>  <!--disabilitato in quanto current user-->
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="usrnameTextInput" name="usrname" 
+                  value="@{{current_user.nickname}}">
+                <label for="usrnameTextInput" class="form-label">Username</label>
+              </div>
+            </fieldset>
+            
+            <div class="form-floating mb-3">
+              <input type="hidden" class="form-control rounded-3" name="titolo_serie" id="titoloInput"  value="{{serie.titolo_serie}}">
+            </div>
+
+            <div class="form-floating mb-3">
+              <input type="hidden" class="form-control rounded-3" name="id_serie" id="idInput"  value="{{serie.id_serie}}">
+            </div>
+            
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" id="seriedescr" name="testo"
+              placeholder="Inserisci una breve descrizione della tua serie" required minlength="20" maxlength="50" value="{{serie.descrizione}}">
+             <label for="seriedescr" class="form-label">Breve descrizione serie</label>
+            </div>
+
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control rounded-3" name="categoria" id="categoriaInput" placeholder="Categoria Serie"
+              required minlength="3" maxlength="10" value="{{serie.categoria}}">
+              <label for="categoriaInput" class="form-label">Categoria</label>
+            </div>
+            
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+            <button type="submit" class="btn btn-dark">Modifica Serie</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>  
+
+<div class="modal fade" id="createModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5">Crea nuovo episodio</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+    
+      <form action="/episodio/new" method="POST" enctype="multipart/form-data" > 
+        <div class="modal-body">
+          <fieldset disabled>  
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" id="usrnameTextInput" name="usrname" 
+                value="@{{current_user.nickname}}">
+              <label for="usrnameTextInput" class="form-label">Username</label>
+            </div>
+          </fieldset>
+
+            <div class="form-floating mb-3">
+              <input type="hidden" class="form-control" id="serieInput" name="serie" value={{serie.id_serie}} ">
+            </div>
+
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control rounded-3" name="titolo_episodio" id="titoloInput" placeholder="Titolo episodio*"
+              required minlength="3" maxlength="10" >
+            <label for="titoloInput" class="form-label">Titolo episodio*</label>
+          </div>
+        </fieldset>
+
+          <div class="mb-3">
+            <label for="soundFile" class="form-label">Aggiungi audio dell' episodio</label>
+            <input class="form-control" name="sound" required type="file" id="soundFile">
+          </div>
+
+          <div class="mb-3">
+            <label for="postTextarea" class="form-label">Breve descrizione dell'episodio</label>
+            <textarea class="form-control" id="postTextarea" name="testo" rows="4"
+            placeholder="Inserisci una breve descrizione per episodio*" required minlength="20" maxlength="400"></textarea>
+          </div>
+
+          <div class="mb-3">
+            <label for="dateTextInput" class="form-label">Seleziona una data </label>
+            <input class="form-control" type="date" name="data_pubblicazione" id="dateTextInput"  value="{{oggi}}">
+          </div>
+          
+          <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+          <button type="submit" class="btn btn-dark">Crea Episodio</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+
+{% endblock %}
+

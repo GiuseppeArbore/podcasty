@@ -1,0 +1,176 @@
+{% extends "base.html" %}
+{% block title %}Episodio by {{serie.titolo_serie}}{% endblock %}
+{% block home_active %}active{% endblock %}
+
+{% block content %}
+<div class="supermydiv">
+  <main class="col-lg-9 col-md-12">
+    <article class="row border p-2 myart">
+      <div class="col-lg-3 col-md-6 col-sm-12 px-0">
+        <img class="serieimg2 p-2" src="{{ url_for('static', filename=serie.immagine_serie) }}" alt="Immagine relativa alla serie">
+      </div>
+      <div class="col-lg-9 col-md-6 col-sm-12">
+        <section class="d-flex align-items-center mt-2 mb-4">
+          <div>
+            <h4> <a class="myabl" href="{{url_for('single_serie', id=serie.id_serie)}}">{{serie.titolo_serie}}</a> - {{episodi.titolo}}</h4>
+            <h6 class="username">{{ serie.nickname }}</h6>
+          </div>
+          <div class="flex-grow-1 text-end">
+            <p>{{ episodi.data_pubblicazione }}</p>
+          </div>
+        </section>
+        {% if current_user.is_authenticated %}
+          <figure class="mycntr">
+            <audio
+                controls
+                src="{{ url_for('static', filename=episodi.file)}}">
+                    <a href="/static/{{episodi.file}}">
+                      Download audio
+                    </a>
+            </audio>
+          </figure>
+          <p class="mydescr">{{ episodi.descrizione }}</p>
+        {% else %}
+          <p class="mydescr">{{ episodi.descrizione}}</p>
+        {% endif %}
+      </div>
+
+      {% if comments %}
+        {% for comment in comments %}
+        <hr class="border">
+        <div class="col-lg-12 col-md-9 col-sm-12">
+          <section class="d-flex align-items-top mt-2 mb-4">
+            <div>
+            <img class="comimg rounded-circle"
+                src="{{ url_for('static', filename= comment.immagine_profilo ) }}"
+                alt="Questa è l'immagine dell'utente {{ comment.nickname}}">
+            </div>
+            <div>
+              <h6>{{ comment.nickname}}</h6>
+              <p>{{ comment.testo_commento }}</p>
+            </div>
+            <div class="flex-grow-1 text-end">
+              <div class="flex-grow-1 text-end">
+                <p>{{ comment.data_pubb_commento}}</p>
+              </div>
+              {% if current_user.is_authenticated %}
+              {% if comment.id_utente == current_user.id %}
+              <div class="mybdx">
+                <a href="{{url_for('elimina_commento', id=serie.id_serie, id_e=episodi.id_episodio, id_c=comment.id_commento)}}" type="button" class="btn btn-dark btn-md mybtn">
+                  elimina
+                </a>
+              </div>
+              {% endif %}
+              {% endif %}
+            </div>
+
+          
+          </section>
+        </div>
+
+        {% endfor %}
+      {% else %}
+          {% if current_user.is_authenticated%}
+            <h6 class="destra">Nessun commento presente, inserisci tu il primo!</h6>
+          {% else %}
+            <h6 class="destra">Nessun commento presente, per inserirne uno devi autenticarti!</h6>
+          {% endif %}
+      {% endif %}
+      {% if current_user.is_authenticated %}
+      <hr class="border">
+      <form action="/comments/new" method="POST">
+        <div class="mb-3">
+          <textarea class="form-control" id="testoInput" rows="3" placeholder="Nuovo commento..." name="testo"></textarea>
+          <input type="hidden" name="serie" value="{{ serie.id_serie }}">
+          <input type="hidden" name="id_episodio" value="{{ episodi.id_episodio }}">
+          <div class="pt-2 text-end">
+            <button type="submit" class="btn btn-dark btn-sm mybtn">Invia</button>
+          </div>
+        </div>
+      </form>
+      {% endif %}
+    </article>
+  </main>
+
+  <aside class="col-lg-3 col-md-12 myaside">  
+    {% if current_user.is_authenticated %}
+      {% if current_user.id == serie.autore%}
+        <div class="mybcl">
+          <a href="{{url_for('elimina_episodio', id_e=episodi.id_episodio)}}" class="btn btn-dark btn-md mybtnl mybtn">
+            elimina episodio
+          </a>
+          <button type="button" class="btn btn-dark btn-md mybtnl mybtn" data-bs-toggle="modal" data-bs-target="#modalup">
+            modifica episodio 
+          </button>        
+        </div>
+      {%else%}
+      <p>Per modificare serie e episodi devi essere creatore</p>
+    {%endif%}
+    {% else %}
+      <p>Registrati/accedi per ascoltare gli episodi</p>
+      <section class="myasect">
+        <a class="btn btn-dark btn-lg mybb" aria-current="page" href="{{ url_for('signup') }}">Registrati</a>
+        <a class="btn btn-dark btn-lg mybb" aria-current="page" href="{{ url_for('login') }}">Accedi</a>
+      </section>
+    {% endif %}
+
+  </aside>
+
+</div>
+{% if current_user.is_authenticated%}
+
+<section>
+  <div class="modal fade" id="modalup" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5">Modifica episodio: {{episodi.titolo}}</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form action="/episodio/update" method="POST" enctype="multipart/form-data"> 
+          <div class="modal-body">
+            <fieldset disabled>  <!--disabilitato in quanto current user-->
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="usrnameTextInput" name="usrname" 
+                  value="@{{current_user.nickname}}">
+                <label for="usrnameTextInput" class="form-label">Username</label>
+              </div>
+            </fieldset>
+            
+
+            <div class="form-floating mb-3">
+              <input type="hidden" class="form-control rounded-3" name="id_serie" id="idsInput"  value="{{serie.id_serie}}">
+            </div>
+
+            <div class="form-floating mb-3">
+              <input type="hidden" class="form-control rounded-3" name="id_episodio" id="ideInput"  value="{{episodi.id_episodio}}">
+            </div>
+            
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" id="titolo" name="titolo"
+              placeholder="Modifica titolo episodio" required minlength="3" maxlength="20" value="{{episodi.titolo}}">
+             <label for="titolo" class="form-label">Titolo episodio</label> 
+            </div>
+
+
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" id="edescr" name="testo"
+              placeholder="Modifcaa descrizione del tuo episodio" required minlength="20" maxlength="400" value="{{episodi.descrizione}}">
+             <label for="edescr" class="form-label">Breve descrizione episodio</label>
+            </div>
+            
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+            <button type="submit" class="btn btn-primary">Modifica episodio</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>  
+
+
+
+{% endif %}
+{% endblock %}

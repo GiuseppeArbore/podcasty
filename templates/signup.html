@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Registrati{% endblock %}
+{% block signup_active %}active{% endblock %}
+
+
+{% block content %}
+<div class="myldiv">
+    <div class="col-lg-5 col-md-12 bg-light p-4 border rounded-3">
+        <form action="/iscriviti" method="POST" enctype="multipart/form-data">
+            
+            <div class="mb-3">
+                <label for="nicknameInput" class="form-label">Nickname</label>
+                <input type="text" class="form-control" name="nickname" id="nicknameInput" required minlength="3"
+                    maxlength="20" placeholder="minimo 3 caratteri, massimo 20 caratteri">
+            </div>
+
+            <div class="mb-3">
+                <label for="emailInput" class="form-label">Email</label>
+                <input type="email" class="form-control" name="email" id="emailInput" required minlength="5"
+                    maxlength="20" placeholder="es: nome@gmail.com">
+            </div>
+
+            <div class="mb-3">
+                <label for="passwordInput" class="form-label">Password</label>
+                <input type="password" class="form-control" name="password" id="passwordInput" required minlength="8"
+                    maxlength="20" placeholder="minimo 8 caratteri">
+            </div>
+
+            <div class="mb-3">
+                <label for="immagineInput" class="form-label">Immagine di profilo</label>
+                <input type="file" class="form-control" name="immagine_profilo" id="immagineInput">
+            </div>
+
+            <div class="mb-3">
+                <label for="creatore" class="form-label">Tipo di utente</label>
+                <select class="form-select" name="creatore" id="creatore">
+                    <option selected>Scelta tipo di utente</option>
+                    <option value="0">Ascoltatore</option>
+                    <option value="1">Creatore</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-dark">Registrati</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

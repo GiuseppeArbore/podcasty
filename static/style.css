@@ -1,0 +1,369 @@
+#myheader h1 {
+    color: white;
+}
+
+.fflash{
+    position: relative;
+    top: 7rem;
+}
+
+.mynavli{
+    color: white;
+}
+
+/*creazione nuovo in home e serie*/
+#mycrea{
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.hide{
+    display: none;
+}
+
+.active{
+    background-color: azure;
+    border-radius: 2rem;
+}
+
+/*navbar dell'header*/
+.mynavbar {
+    padding: 1rem;
+    background-color:lightblue;
+    display: flex;
+    height: fit-content;
+}
+
+/*usate nel titolo*/
+.username {
+    font-weight: 100;
+}
+
+/*aside di episodio, home e serie*/
+.myaside {
+    background-color: white;
+    border-style: solid;
+    border-width: 0.2rem;
+    border-color: lightblue;
+    border-radius: 1rem;
+    padding-top: 1rem;
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    height: fit-content;
+    text-align: center;
+}
+
+/*usato nella home*/
+.myaside li {
+    padding-bottom: 1rem;
+}
+
+.myaside ul {
+    list-style-type: none;
+    padding: 0rem 1rem;
+}
+
+/*div home, episodio e serie*/
+.supermydiv{
+    position: relative;
+    top: 2rem;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+/*div profilo*/
+.mybigdiv{
+    position: relative;
+    top: 2rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+/*immagine utenti nei commenti*/
+.comimg{
+    height: 4rem;
+    vertical-align: middle;
+    margin: 0.5rem 0.5rem 0.5rem 0rem;
+    border-radius: 10rem;
+}
+
+/*immagine serie in home*/
+.serieimg{
+    width: 100%;
+    height: 15rem ;
+    border-radius: 1rem;
+}
+/*immmagine serie in serie e episodi*/
+.serieimg2{
+    width: 15rem;
+    height: 15rem ;
+    border-radius: 1rem;
+}
+
+.imgserieprf{
+    width: 100%;
+    border-radius: 1rem;
+}
+
+/*descrizioni di serie e episodi*/
+.mydescr{
+    overflow-wrap: break-word;
+}
+
+/*bottoni primari*/
+.mybtn{
+    background-color: lightgray;
+    color: black;
+    border-color: white;
+}
+
+/*bottoni secondari, usata anche in app.js e app_serie.js*/
+.myall{
+    background-color: rgb(234, 233, 233);
+    color: black;
+    border-color: white;
+}
+
+/*bottone per creazione*/
+.mybtnserie{
+    background-color: lightgray;
+    border-color: lightgray;
+    color:black;
+    width: 15rem;
+}
+
+
+#showallep{
+    margin-bottom: 1rem;
+}
+
+#showall{
+    margin-bottom: 1rem;
+}
+
+
+/*main di profile*/
+.mymainprofile{
+    background-color: white;
+    border-style: solid;
+    border-width: 0.4rem;
+    border-color: lightblue;
+    border-radius: 1rem;
+    padding: 1rem;
+    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    height: fit-content;
+    text-align: center;
+}
+
+/*contiene button per accedere/registrarsi nell'aside*/
+.myasect{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-bottom: 2rem;
+    margin-right: 3rem;
+    margin-left: 3rem;
+}
+
+/*article di episodi e serie*/
+.myart{
+    border-radius: 1rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+
+.mysecond{
+    background-color: white;
+    padding: 1rem;
+    display: flex;
+    flex-direction: row;
+    height: fit-content;
+    text-align:center;
+    margin-bottom: 1rem;
+}
+
+/*immagine dell'utente in profilo*/
+.usrimg {
+    height: 10rem;
+    vertical-align: middle;
+    margin: 0.5rem 0.5rem 0.5rem 0rem;
+}
+
+/*usate in profile e home*/
+.myflex{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.myarticle{
+    margin: 1rem;
+}
+
+/*titolo serie*/
+.mytitolo{
+font-weight: 100;
+}
+
+/*modifica, elimina serie e commento*/
+.mybdx{
+    order: 1;
+    align-self: flex-end;
+}
+
+/*contenitore dell'audio*/
+.mycntr{
+    display: flex;
+    justify-content: center;
+}
+
+.mya{
+    text-decoration: none;
+    color: blue;
+}
+
+/*usato in episodio per fare link nero a serie*/
+.myabl{
+    text-decoration: none;
+    color: black;
+}
+
+/*contenitore modifica ed elimina in episodio*/
+.mybcl{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 1rem;
+}
+
+/*modifica ed elimina episodio*/
+.mybtnl{
+    width: 10rem;
+    margin: 0.5rem;
+}
+
+/*contenitore usato per la ricerca di un episodio, usato in serie*/
+.cerca_ep{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin:1rem;
+}
+
+.destra{
+    text-align:center;
+}
+.myt{
+    margin-right: 2rem;
+}
+
+/*div usato in login e registrati*/
+.myldiv{
+    position: relative;
+    top: 8rem;
+    display: flex;
+    justify-content: space-around;
+}
+
+
+#lista-serie{
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: start;
+}
+
+header{
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1;
+}
+
+
+@media (max-width: 1400px){
+    .cp{
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 991.98px) {
+    #myaside ul {
+        display: flex;
+        justify-content: space-between;
+        list-style-type: none;
+        padding: 0rem 1rem;
+    }
+    
+    #myaside {
+        background-color: lightgray;
+        border-radius: 1rem;
+        padding-top: 1rem;
+        margin-top: 2rem;
+        text-align: center;
+    }
+
+    .aside li {
+        display: inline;
+        list-style-type: none;
+        padding: 0em;
+        width: fit-content;
+    }
+
+    .supermydiv{
+        display: flex;
+        flex-direction: column-reverse;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+    }
+
+    .mybigdiv{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .myflexcnt{
+        margin-bottom: 1rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .mynavbar {
+        padding: 1rem;
+        background-color:lightblue;
+        height: 20rem;
+        display: flex;
+        height: fit-content;
+    }
+
+    .myldiv{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        width: 100%;
+        height: fit-content;
+    }
+
+    .cp{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    #lista-serie{
+        display: flex;
+        flex-direction: column-reverse;
+        justify-content: start;
+    }
+
+}

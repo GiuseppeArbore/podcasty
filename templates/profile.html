@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}About{% endblock %}
+{% block profile_active %}active{% endblock %}
+
+{% block content %}
+<div class="mybigdiv">
+  <div class="col-lg-5 col-md-12 mymainprofile">
+    <h2>Informazioni personali</h2>
+    <div>{% if current_user.immagine_profilo %}        
+      <img class="usrimg" src="{{ url_for('static', filename= current_user.immagine_profilo) }}"
+      alt="Questa è l'immagine dell'utente {{ current_user.nickname }}">
+        {% endif %}
+    </div>
+
+    <ol class="list-group">
+      <li class="list-group-item">
+        <div class="ms-2 me-auto">
+          <h3>Nickname:</h3>
+          <p>{{current_user.nickname}}</p>
+        </div>
+      </li>
+      <li class="list-group-item">
+        <div class="ms-2 me-auto">
+          <h3>Email:</h3><p>{{current_user.email}}</p> 
+        </div>
+      </li>
+      <li class="list-group-item">
+        <div class="ms-2 me-auto">
+          <h3>Tipo di utente:</h3>
+            {% if current_user.creatore %}
+              <p>Creatore</p>
+            {% else %}
+              <p>Ascoltatore</p>
+            {% endif %}
+        </div>
+      </li>
+    </ol>
+  </div>
+
+  <aside class="col-lg-6 col-md-12 mysecond row g-4">
+    {%if series%}
+    <h3>Serie seguite</h3>
+
+    {% for serie in series %}
+      <article class="col-lg-4 col-md-6">
+        <div class="card h-100">
+          <div class="myflex myarticle cp">
+            <h5 class="username">{{ serie.titolo_serie}}</h5> 
+            <a href="{{url_for('u_by_profile', id_s=serie.id_serie)}}" class="btn btn-dark btn-sm mybtn">Unfollow</a>
+          </div>
+          <img class="p-2 imgserieprf" src="{{ url_for('static', filename=serie.immagine_serie) }}" alt="Immagine della serie {{serie.titolo_serie}}">
+          <div class="card-body">
+            <p> {{serie.categoria}} </p>
+          </div>
+          <div class="card-footer myflex">
+            <small class="text-muted">{{ serie.nickname }}</small>
+            <a href="{{url_for('single_serie', id=serie.id_serie)}}" class="btn btn-dark btn-sm mybtn">Apri</a>
+          </div>
+        </div>
+      </article>
+    {% endfor %}
+    {% else %}
+      <h6>Non segui alcuna serie, inzia a seguire qualche serie!</h6>
+    {% endif %}
+  </aside>
+
+</div>
+
+{% endblock %}
